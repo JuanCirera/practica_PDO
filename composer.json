@@ -1,0 +1,21 @@
+{
+    "name": "cirera/practica_pdo",
+    "description": "practica PDO",
+    "type": "project",
+    "license": "gnu/gpl",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "JuanCirera",
+            "email": "cirerarosa@hotmail.es"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv":"5.5.0",
+        "fakerphp/faker": "^1.20"
+    }
+}
