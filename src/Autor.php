@@ -34,13 +34,15 @@ class Autor extends Conexion{
         parent::$conexion=null;
     }
 
-    public static function read(bool $id=null){
+    public function read(){
         parent::crearConexion();
-        $q=($id==null)?"select * from autores":"select id_autor from autores";
+        $q="select * from autores where id=:i";
         $stmt=parent::$conexion->prepare($q);
 
         try{
-            $stmt->execute();
+            $stmt->execute([
+                ":i"=>$this->id
+            ]);
         }catch(PDOException $e){
             die("Error en read (autores): ".$e->getMessage());
         }
@@ -113,6 +115,55 @@ class Autor extends Conexion{
         return $stmt->rowCount();
     }
 
+
+    public static function existeAutor(int $id){
+        parent::crearConexion();
+        $q="select id_autor from autores where id_autor=:i";
+        $stmt=parent::$conexion->prepare($q);
+
+        try{
+            $stmt->execute([
+                ":i"=>$id
+            ]);
+        }catch(PDOException $e){
+            die("Error en existeAutor: ".$e->getMessage());
+        }
+
+        parent::$conexion=null;
+        return $stmt->rowCount();
+    }
+
+    public static function readAll(){
+        parent::crearConexion();
+        $q="select * from autores order by id_autor desc";
+        $stmt=parent::$conexion->prepare($q);
+
+        try{
+            $stmt->execute();
+        }catch(PDOException $e){
+            die("Error en existeAutor: ".$e->getMessage());
+        }
+
+        parent::$conexion=null;
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public static function whichAutor(int $id){
+        parent::crearConexion();
+        $q="select nombre,apellidos from autores where id_autor=:i";
+        $stmt=parent::$conexion->prepare($q);
+
+        try{
+            $stmt->execute([
+                ":i"=>$id
+            ]);
+        }catch(PDOException $e){
+            die("Error en whichAutor: ".$e->getMessage());
+        }
+
+        parent::$conexion=null;
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
 
     // ------ Setters
 

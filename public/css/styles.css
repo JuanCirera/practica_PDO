@@ -1,0 +1,21 @@
+
+/* Color de los enlaces de la barra navegacion */
+nav a:link {
+    color: #CDCDCD;
+}
+
+nav a:link:hover {
+    color: #FFFFFF;
+}
+
+nav a:visited:hover {
+    color: #FFFFFF;
+}
+
+nav a:visited {
+    color: #CDCDCD;
+} 
+
+body{
+    color: #CDCDCD;
+}

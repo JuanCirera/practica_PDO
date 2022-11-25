@@ -42,7 +42,7 @@ class Libro extends Conexion{
 
     public static function read(){
         parent::crearConexion();
-        $q="select * from libros";
+        $q="select * from libros order by id_libro desc";
         $stmt=parent::$conexion->prepare($q);
 
         try{
@@ -98,7 +98,7 @@ class Libro extends Conexion{
         $faker=\Faker\Factory::create("es_ES");
 
         //He modificado el read de Autores para que me traiga solo los ids si le paso true
-        $autores=Autor::read(true);
+        $autores=Autor::readAll();
         $id_autores=[];
         //Aqui tengo que hacer una ñapa porque al read le dije que devolviera objetos,
         //por lo que tengo que hacer otro array para meter unicamente los id.
@@ -111,7 +111,7 @@ class Libro extends Conexion{
             ->setTitulo($faker->word())
             ->setIsbn($faker->isbn13())
             ->setAutor($faker->randomElement($id_autores))
-            ->setPortada("img/default.jpg")
+            ->setPortada("/img/default.jpg")
             ->create();
         }
     }
@@ -132,6 +132,22 @@ class Libro extends Conexion{
         return $stmt->rowCount();
     }
 
+    public static function existeLibro(int $id){
+        parent::crearConexion();
+        $q="select id_libro from libros where id_libro=:i";
+        $stmt=parent::$conexion->prepare($q);
+
+        try{
+            $stmt->execute([
+                ":i"=>$id
+            ]);
+        }catch(PDOException $e){
+            die("Error en existelibro: ".$e->getMessage());
+        }
+
+        parent::$conexion=null;
+        return $stmt->rowCount();
+    }
 
     // ------ Setters
 

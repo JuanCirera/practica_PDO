@@ -9,6 +9,6 @@ create table libros(
     titulo varchar(80) not null,
     isbn varchar(13), 
     autor int,
-    portada varchar(80) default "img/default.jpg",
-    constraint lib_autor foreign key(autor) references autores(id_autor) on update cascade on delete set null
+    portada varchar(80) default "/img/default.jpg",
+    constraint lib_autor foreign key(autor) references autores(id_autor) on update cascade on delete cascade
 );
