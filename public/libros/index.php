@@ -47,7 +47,7 @@ $libros = Libro::read();
     <div class="container">
 
         <!-- <h3 class="text-uppercase text-center mt-5 mb-5"><i class="fa-solid fa-book-open"></i> Biblioteca</h3> -->
-        <h3 class=" text-center mt-5 mb-5">Libros</h3>
+        <h3 class=" text-center mt-5 mb-5"><i class="fa-solid fa-book"></i> Libros</h3>
 
         <a href="./crear.php" class="btn btn-primary mb-5"><i class="fas fa-add"></i> Nuevo libro</a>
 
@@ -65,11 +65,9 @@ $libros = Libro::read();
 
             echo <<<TXT
                 <div class="card mb-4 me-3" style="width:30rem; background-color:#282d32">
-                    <form action="{$_SERVER['PHP_SELF']}" method="POST">
+                    <form action="./delete.php" method="POST">
                         <div class="bg-image">
-                        <!-- <a href="./update.php?={$libro->id_libro}" cursor="hand"> -->
-                                <img src="./..{$libro->portada}" class="img-fluid" style="width:30rem;height:30rem;"/>
-                            <!-- </a> -->
+                            <img src="./..{$libro->portada}" class="img-fluid" style="width:30rem;height:30rem;"/>
                         </div> 
                         <div class="card-body">
                             <h5 class="card-title">{$libro->titulo}</h5>
@@ -77,7 +75,8 @@ $libros = Libro::read();
                             <p class="card-text"><b>ISBN:</b> {$libro->isbn}</p>
                             
                         <p type="hidden" value="{$libro->id_libro}" name="id_autor"></p>
-                        <a class="btn btn-warning" href="./update.php?={$libro->id_libro}" style="color:black"><i class="fas fa-edit"></i></a>
+                        <a class="btn btn-warning" href="./update.php?id={$libro->id_libro}" style="color:black"><i class="fas fa-edit"></i></a>
+                        <input type="hidden" name="id_libro" value="{$libro->id_libro}">
                         <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                     
                         </div>
@@ -85,7 +84,7 @@ $libros = Libro::read();
                 </div>
             TXT;
 
-            $cont_col++;
+            $cont_col++; 
             if ($cont_col == 3) {
                 echo "</div>";
                 $cont_col = 0;

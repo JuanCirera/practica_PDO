@@ -1,36 +1,49 @@
 <?php
 
-namespace App;
+namespace App\Autores;
 
+use App\Autor;
+use App\Tools;
+
+use function App\mostrarNavbar;
+
+require __DIR__."/../../vendor/autoload.php";
+include __DIR__."/../../src/navbar.php";
 
 session_start();
 
-if(isset($_POST["crear"])){
+if(isset($_POST["guardar"])){
     $error=false;
 
     $nombre=trim($_POST["nombre"]);
     $apellidos=trim($_POST["apellidos"]);
 
     //Comprobaciones campos
-    if(!preg_match('[A-Z][a-z]',$nombre)){
+    if(strlen($nombre)<3){
         $error=true;
-        $_SESSION["err_nombre"]="**** El nombre no puede contener numeros";
-        die();
+        $_SESSION["err_nombre"]="** El nombre debe tener al menos 3 caracteres";
+        //Aqui no se pueden meter die(), para eso esta el if($error)
     }
 
-    if(!preg_match('[A-Z][a-z]',$apellidos)){
+    if(strlen($apellidos)<3){
         $error=true;
-        $_SESSION["err_apellidos"]="**** Los apellidos no pueden contener numeros";
-        die();
+        $_SESSION["err_apellidos"]="** Los apellidos deben tener al menos 3 caracteres";
     }
-
 
     if($error){
-
+        header("Location:{$_SERVER['PHP_SELF']}");
+        die();
     }
 
-}
+    (new Autor)
+    ->setNombre($nombre)
+    ->setApellidos($apellidos)
+    ->create();
 
+    $_SESSION["mensaje"]="Autor creado";
+    header("Location:index.php");
+
+}else{
 
 ?>
 
@@ -48,56 +61,49 @@ if(isset($_POST["crear"])){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <!-- sweetAlert 2 -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="./../css/styles.css">
     <title>Nuevo autor - Biblioteca</title>
 </head>
 
 <body class="bg-dark" style="color: #CDCDCD;">
 
     <?php
-        mostrarNavbar(2);
+       mostrarNavbar();
     ?>
 
     <div class="container">
-        <h3 class="text-uppercase text-center mt-5 mb-5"><i class="fa-solid fa-book-open"></i> Biblioteca</h3>
-        <h4 class=" text-center mt-5 mb-5">Nuevo autor</h4>
-
-        <form action="<?php $_SERVER['PHP_SELF'] ?>" method="POST">
-
-            <section class="vh-100">
-                <div class="container">
+        <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST">
+            <section class="vh-50 gradient-custom">
+                <div class="container py-5 h-100">
                     <div class="row d-flex justify-content-center align-items-center h-100">
                         <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                            <div style="background-color:#212529">
-                                <div class="card-body p-5 text-center">
+                            <div class="card" style="border-radius: 1rem; background-color:#212529">
+                                <div class="card-body p-5">
+                                    <h3 class="fw-bold mb-2 text-uppercase mb-5">Nuevo autor</h3>
 
-                                    <div class="mb-md-5 mt-md-4 pb-5">
-
-                                        <div class="form-outline form-white mb-4">
-
-                                            <input type="text" id="nombre" class="form-control form-control-lg" name="nombre" required />
-                                            <label class="form-label" for="nombre">Nombre</label>
-                                        </div>
-
-                                        <div class="form-outline form-white mb-4">
-
-                                            <input type="password" id="apellidos" class="form-control form-control-lg" name="apellidos" required />
-                                            <label class="form-label" for="apellidos">Apellidos</label>
-                                        </div>
-
-                                        <button class="btn btn-outline-info btn-lg px-5 mb-3" name="crear" type="submit"><i class="fa-solid fa-add"></i> Crear</button><br>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="nombre">Nombre</label>
+                                        <input type="text" id="nombre" class="form-control" name="nombre" required />
+                                        <?php Tools::mostrarError("err_nombre") ?>
                                     </div>
 
+                                    <div class="mb-4">
+                                        <label class="form-label" for="apellidos">Apellidos</label>
+                                        <input type="text" id="apellidos" class="form-control" name="apellidos" required />
+                                        <?php Tools::mostrarError("err_apellidos") ?>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-outline-primary px-3 mt-4" name="guardar"><i class="fas fa-save"></i> Guardar</button>
+                                    <button type="reset" class="btn btn-outline-info px-3 mt-4"><i class="fas fa-broom"></i> Limpiar</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-
-
         </form>
     </div>
 
 </body>
-
 </html>
+<?php } ?>

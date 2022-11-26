@@ -36,7 +36,7 @@ class Autor extends Conexion{
 
     public function read(){
         parent::crearConexion();
-        $q="select * from autores where id=:i";
+        $q="select * from autores where id_autor=:i";
         $stmt=parent::$conexion->prepare($q);
 
         try{
@@ -52,7 +52,7 @@ class Autor extends Conexion{
     }
 
     public function update(int $id){
-        $q="update from autores set nombre=:n, apellidos=:a where id=:i";
+        $q="update autores set nombre=:n, apellidos=:a where id_autor=:i";
         $stmt=parent::$conexion->prepare($q);
 
         try{
@@ -68,8 +68,9 @@ class Autor extends Conexion{
         parent::$conexion=null;
     }
 
-    public function delete(int $id){
-        $q="delete from autores where id=:i";
+    public static function delete(int $id){
+        parent::crearConexion();
+        $q="delete from autores where id_autor=:i";
         $stmt=parent::$conexion->prepare($q);
 
         try{
@@ -150,7 +151,7 @@ class Autor extends Conexion{
 
     public static function whichAutor(int $id){
         parent::crearConexion();
-        $q="select nombre,apellidos from autores where id_autor=:i";
+        $q="select * from autores where id_autor=:i";
         $stmt=parent::$conexion->prepare($q);
 
         try{

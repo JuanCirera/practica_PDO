@@ -2,6 +2,8 @@
 
 namespace App\Autores;
 
+session_start();
+
 use App\Autor;
 
 use function App\mostrarNavbar;
@@ -9,7 +11,7 @@ use function App\mostrarNavbar;
 require __DIR__ . "/../../vendor/autoload.php";
 include __DIR__."/../../src/navbar.php";
 
-$autores = Autor::read();
+$autores = Autor::readAll();
 
 ?>
 
@@ -40,7 +42,7 @@ $autores = Autor::read();
     <div class="container">
 
         <!-- <h3 class="text-uppercase text-center mt-5 mb-5"><i class="fa-solid fa-book-open"></i> Biblioteca</h3> -->
-        <h3 class=" text-center mt-5 mb-5">Autores</h3>
+        <h3 class=" text-center mt-5 mb-5"><i class="fa-solid fa-user-pen"></i> Autores</h3>
         <a href="./crear.php" class="btn btn-primary mb-5"><i class="fas fa-add"></i> Nuevo autor</a>
 
         <table class="table" style="color:#CDCDCD">
@@ -59,9 +61,9 @@ $autores = Autor::read();
                                 <th scope="row">{$autor->id_autor}</th>
                                 <td>{$autor->nombre} {$autor->apellidos}</td>
                                 <td>
-                                    <form action="{$_SERVER['PHP_SELF']}" method="POST">
+                                    <form action="delete.php" method="POST">
                                         <input type="hidden" value="{$autor->id_autor}" name="id_autor"></input>
-                                        <a class="btn btn-warning" href="./update.php?={$autor->id_autor}" style="color:black"><i class="fas fa-edit"></i></a>
+                                        <a class="btn btn-warning" href="./update.php?id={$autor->id_autor}" style="color:black"><i class="fas fa-edit"></i></a>
                                         <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                     </form>
                                 </td>
@@ -71,6 +73,22 @@ $autores = Autor::read();
                 ?> 
             </tbody> 
         </table> 
+
+        <?php
+            if(isset($_SESSION["mensaje"])){
+                echo <<<TXT
+                    <script>
+                        Swal.fire({
+                            icon: 'success',
+                            title: '{$_SESSION['mensaje']}',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    </script>
+                TXT;
+            }
+            unset($_SESSION["mensaje"]);
+        ?>
 
 </body>
 

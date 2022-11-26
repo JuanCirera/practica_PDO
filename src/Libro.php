@@ -56,7 +56,7 @@ class Libro extends Conexion{
     }
 
     public function update(int $id){
-        $q="update from libros set titulo=:t, isbn=:i, autor=:a, portada=:p where id=:i";
+        $q="update libros set titulo=:t, isbn=:i, autor=:a, portada=:p where id_libro=:id";
         $stmt=parent::$conexion->prepare($q);
 
         try{
@@ -65,7 +65,7 @@ class Libro extends Conexion{
                 ":i"=>$this->isbn,
                 ":a"=>$this->autor,
                 ":p"=>$this->portada,
-                ":i"=>$id
+                ":id"=>$id //Cuidado con esto que hay dos param iguales
             ]);
         }catch(PDOException $e){
             die("Error en update (libros): ".$e->getMessage());
@@ -74,8 +74,9 @@ class Libro extends Conexion{
         parent::$conexion=null;
     }
 
-    public function delete(int $id){
-        $q="delete from libros where id=:i";
+    public static function delete(int $id){
+        parent::crearConexion();
+        $q="delete from libros where id_libro=:i";
         $stmt=parent::$conexion->prepare($q);
 
         try{
@@ -87,6 +88,23 @@ class Libro extends Conexion{
         }
         
         parent::$conexion=null;
+    }
+
+    public static function whichLibro(int $id){
+        parent::crearConexion();
+        $q="select * from libros where id_libro=:i";
+        $stmt=parent::$conexion->prepare($q);
+
+        try{
+            $stmt->execute([
+                ":i"=>$id
+            ]);
+        }catch(PDOException $e){
+            die("Error en whichLibro: ".$e->getMessage());
+        }
+
+        parent::$conexion=null;
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
 

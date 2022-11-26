@@ -9,14 +9,12 @@ include __DIR__ . "/../../src/navbar.php";
 
 $autores=Autor::readAll();
 
-if(isset($_POST["crear"])){
+if(isset($_POST["guardar"])){
     $error=false;
 
     $titulo=$_POST["titulo"];
     $isbn=$_POST["isbn"];
     $autor_id=(int)($_POST["autor_id"]); //Aqui hago un casting a entero porque el atributo autor es entero
-
-    // die(var_dump($autor_id));//TODO
 
     if(strlen($titulo)<3){
         $error=true;
@@ -96,7 +94,6 @@ if(isset($_POST["crear"])){
     mostrarNavbar();
     ?>
     <div class="container">
-        <!-- <h5 class="text-center my-4">Nuevo libro</h5> -->
 
         <form action="<?php echo $_SERVER['PHP_SELF'] ?>" method="POST" enctype="multipart/form-data">
 
@@ -143,7 +140,7 @@ if(isset($_POST["crear"])){
                                         <img src="./../img/default.jpg" class="rounded" name="imagen" id="imagen" style="width:20rem;height:30rem">
                                     </div>
 
-                                    <button type="submit" class="btn btn-outline-primary px-3 mt-4" name="crear" ><i class="fas fa-save"></i> Guardar</button>
+                                    <button type="submit" class="btn btn-outline-primary px-3 mt-4" name="guardar"><i class="fas fa-save"></i> Guardar</button>
                                     <button type="reset" class="btn btn-outline-info px-3 mt-4"><i class="fas fa-broom"></i> Limpiar</button>
                                 </div>
                             </div>
@@ -153,6 +150,7 @@ if(isset($_POST["crear"])){
             </section>
 
         </form>
+
     </div>
 
     <!-- Visualizar imagen subida -->

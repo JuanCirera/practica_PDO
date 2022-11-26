@@ -15,7 +15,7 @@ function mostrarNavbar(){
 
     echo <<<TXT
         <nav class="navbar navbar-expand-lg" style="background-color:#282D32">
-            <a class="navbar-brand me-4 ms-4 text-uppercase" style="color:#CDCDCD"><i class="fa-solid fa-book-open"></i> Biblioteca</a>
+            <a class="navbar-brand me-4 ms-4 text-uppercase fw-bold" style="color:#CDCDCD"><i class="fa-solid fa-book-open"></i> Biblioteca</a>
             <div class="container">
                 <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarButtonsExample" aria-controls="navbarButtonsExample" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="fas fa-bars"></i>
